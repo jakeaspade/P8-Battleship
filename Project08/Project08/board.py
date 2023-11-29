@@ -1,12 +1,15 @@
 class Ship(object):
     """
-        add your Class header here.
+        Creates a ship object with the given length, position, and orientation.
     """
 
     def __init__(self, length, position, orientation):
         """
         Initializes a ship object with the given
-        length, position, and orientation.
+        length, position, and orientation.  The position takes the starting
+        point of the ship and depending on the orientation will fill in the
+        rest of the ship from left to right (horizontal) or top to bottom
+        (vertical).
             Args:
                 length (int): the length of the ship
                 position (list): the position of the ship
@@ -18,10 +21,10 @@ class Ship(object):
         self.positions = []
         self.orientation = orientation
 
-        if self.orientation == "h":
+        if self.orientation == "h": # if the ship is horizontal
             for i in range(self.length):
                 self.positions.append((position[0] + i, position[1]))
-        else:
+        else:   # if the ship is vertical
             for i in range(self.length):
                 self.positions.append((position[0], position[1] + i))
 
@@ -61,7 +64,8 @@ class Ship(object):
 
 class Board(object):
     """
-        add your Class header here.
+        Creates an empty board object with the given size.
+
     """
 
     def __init__(self, size):
@@ -75,7 +79,7 @@ class Board(object):
         """
         self.size = size
         self.board = []
-        for i in range(self.size):
+        for i in range(self.size):  # create an empty board of size x size
             self.board.append([])
             for j in range(self.size):
                 self.board[i].append(" ")
@@ -84,9 +88,13 @@ class Board(object):
     def place_ship(self, ship):
         """
         Places a ship on the board.
+            Args:
+                ship (Ship): a Ship object
+            Returns:
+                None
         """
-
-        for coords in ship.get_positions():
+        for coords in ship.get_positions(): # for each coordinate in the ship
+            # occupy the coordinate with the ship
             self.board[coords[1]][coords[0]] = "S"
 
     def apply_guess(self, guess):
@@ -97,10 +105,10 @@ class Board(object):
             Returns:
                 None
         """
-        if self.board[guess[0]][guess[1]] == "S":
+        if self.board[guess[0]][guess[1]] == "S":   # if the guess is a hit
             self.board[guess[0]][guess[1]] = "H"
             print("Hit!")
-        else:
+        else:   # if the guess is a miss
             self.board[guess[0]][guess[1]] = "M"
             print("Miss!")
 
@@ -114,9 +122,10 @@ class Board(object):
         """
         try:
             for position in ship.get_positions():
+                # if the ship is already on the coordinates
                 if self.board[position[1]][position[0]] == "S":
                     raise RuntimeError("Ship coordinates are already taken!")
-        except IndexError:
+        except IndexError:  # if the ship is out of bounds
             raise RuntimeError("Ship coordinates are out of bounds!")
 
 
@@ -129,8 +138,8 @@ class Board(object):
                 str: the board as a string
         """
         board_string = ""
-        for i in range(self.size):
-            for j in range(self.size):
+        for i in range(self.size):  # y axis
+            for j in range(self.size):  # x axis
                 board_string += f'[{self.board[i][j]}]'
             board_string += "\n"
         return board_string
