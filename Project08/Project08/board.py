@@ -2,61 +2,136 @@ class Ship(object):
     """
         add your Class header here.
     """
+
     def __init__(self, length, position, orientation):
         """
-            add your method header here.
+        Initializes a ship object with the given
+        length, position, and orientation.
+            Args:
+                length (int): the length of the ship
+                position (list): the position of the ship
+                orientation (str): the orientation of the ship
+            Returns:
+                None
         """
-        pass  # TODO: implement this method
+        self.length = length
+        self.positions = []
+        self.orientation = orientation
+
+        if self.orientation == "h":
+            for i in range(self.length):
+                self.positions.append((position[0] + i, position[1]))
+        else:
+            for i in range(self.length):
+                self.positions.append((position[0], position[1] + i))
+
+        self.hit_count = 0
+        self.is_sunk = False
 
     def get_positions(self):
         """
-            add your method header here.
+        Returns a list of positions that the ship occupies.
+            Args:
+                None
+            Returns:
+                list: a list of positions that the ship occupies
         """
-        pass  # TODO: implement this method
+        return self.positions
 
     def get_orientation(self):
         """
-            add your method header here.
+        Returns the orientation of the ship as a srting.
+            Args:
+                None
+            Returns:
+                str: the orientation of the ship
         """
-        pass  # TODO: implement this method
+        return self.orientation
 
     def apply_hit(self):
         """
-            add your method header here.
+        Applies a hit to the ship by incrementing the hit_count.
+            Args:
+                None
+            Returns:
+                None
         """
-        pass  # TODO: implement this method
+        self.hit_count += 1
 
 
 class Board(object):
     """
         add your Class header here.
     """
+
     def __init__(self, size):
         """
-            add your method header here.
+        Initializes the board size, creates an empty board, and initializes
+        an empty list of ships.
+            Args:
+                size (int): the size of the board
+            Returns:
+                None
         """
-        pass  # TODO: implement this method
+        self.size = size
+        self.board = []
+        for i in range(self.size):
+            self.board.append([])
+            for j in range(self.size):
+                self.board[i].append(" ")
+        self.ships = []
 
     def place_ship(self, ship):
         """
-            add your method header here.
+        Places a ship on the board.
         """
-        pass  # TODO: implement this method"S"
+
+        for coords in ship.get_positions():
+            self.board[coords[1]][coords[0]] = "S"
 
     def apply_guess(self, guess):
         """
-            add your method header here.
+        Determines if the guess is a hit or miss and updates the board.
+            Args:
+                guess (tuple): the guess of the player
+            Returns:
+                None
         """
-        pass  # TODO: implement this method
+        if self.board[guess[0]][guess[1]] == "S":
+            self.board[guess[0]][guess[1]] = "H"
+            print("Hit!")
+        else:
+            self.board[guess[0]][guess[1]] = "M"
+            print("Miss!")
 
     def validate_ship_coordinates(self, ship):
         """
-            add your method header here.
+            Rasies a RuntimeError if the ship coordinates are invalid.
+            Args:
+                ship (Ship): a Ship object
+            Returns:
+                None
         """
-        pass  # TODO: implement this method
+        try:
+            for position in ship.get_positions():
+                if self.board[position[1]][position[0]] == "S":
+                    raise RuntimeError("Ship coordinates are already taken!")
+        except IndexError:
+            raise RuntimeError("Ship coordinates are out of bounds!")
+
 
     def __str__(self):
         """
-            add your method header here.
+        prints the board as a string in a matrix format
+            Args:
+                None
+            Returns:
+                str: the board as a string
         """
-        pass  # TODO: implement this method
+        board_string = ""
+        for i in range(self.size):
+            for j in range(self.size):
+                board_string += f'[{self.board[i][j]}]'
+            board_string += "\n"
+        return board_string
+
