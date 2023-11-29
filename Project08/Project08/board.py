@@ -21,10 +21,10 @@ class Ship(object):
         self.positions = []
         self.orientation = orientation
 
-        if self.orientation == "h": # if the ship is horizontal
+        if self.orientation == "v": # if the ship is vertical
             for i in range(self.length):
                 self.positions.append((position[0] + i, position[1]))
-        else:   # if the ship is vertical
+        else:   # if the ship is horizontal
             for i in range(self.length):
                 self.positions.append((position[0], position[1] + i))
 
@@ -43,7 +43,7 @@ class Ship(object):
 
     def get_orientation(self):
         """
-        Returns the orientation of the ship as a srting.
+        Returns the orientation of the ship as a string.
             Args:
                 None
             Returns:
@@ -60,6 +60,8 @@ class Ship(object):
                 None
         """
         self.hit_count += 1
+        if self.hit_count == self.length:   # if the ship is sunk
+            self.is_sunk = True
 
 
 class Board(object):
@@ -95,7 +97,7 @@ class Board(object):
         """
         for coords in ship.get_positions(): # for each coordinate in the ship
             # occupy the coordinate with the ship
-            self.board[coords[1]][coords[0]] = "S"
+            self.board[coords[0]][coords[1]] = "S"
 
     def apply_guess(self, guess):
         """
