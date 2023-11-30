@@ -98,6 +98,7 @@ class Board(object):
         for coords in ship.get_positions(): # for each coordinate in the ship
             # occupy the coordinate with the ship
             self.board[coords[0]][coords[1]] = "S"
+        self.ships.append(ship)
 
     def apply_guess(self, guess):
         """
@@ -109,6 +110,9 @@ class Board(object):
         """
         if self.board[guess[0]][guess[1]] == "S":   # if the guess is a hit
             self.board[guess[0]][guess[1]] = "H"
+            for ship in self.ships:
+                if guess in ship.get_positions():
+                    ship.apply_hit()
             print("Hit!")
         else:   # if the guess is a miss
             self.board[guess[0]][guess[1]] = "M"
