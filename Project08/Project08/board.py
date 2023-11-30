@@ -116,7 +116,7 @@ class Board(object):
 
     def validate_ship_coordinates(self, ship):
         """
-            Rasies a RuntimeError if the ship coordinates are invalid.
+            Raises a RuntimeError if the ship coordinates are invalid.
             Args:
                 ship (Ship): a Ship object
             Returns:
@@ -125,7 +125,7 @@ class Board(object):
         try:
             for position in ship.get_positions():
                 # if the ship is already on the coordinates
-                if self.board[position[1]][position[0]] == "S":
+                if self.board[position[0]][position[1]] == "S":
                     raise RuntimeError("Ship coordinates are already taken!")
         except IndexError:  # if the ship is out of bounds
             raise RuntimeError("Ship coordinates are out of bounds!")
