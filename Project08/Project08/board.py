@@ -21,11 +21,13 @@ class Ship(object):
         self.positions = []
         self.orientation = orientation
 
-        if self.orientation == "v": # if the ship is vertical
+        if self.orientation == "v":  # if the ship is vertical
             for i in range(self.length):
+                # adds positions by incrementing the y coordinate
                 self.positions.append((position[0] + i, position[1]))
         else:   # if the ship is horizontal
             for i in range(self.length):
+                # adds positions by incrementing the x coordinate
                 self.positions.append((position[0], position[1] + i))
 
         self.hit_count = 0
@@ -67,7 +69,6 @@ class Ship(object):
 class Board(object):
     """
         Creates an empty board object with the given size.
-
     """
 
     def __init__(self, size):
@@ -81,9 +82,10 @@ class Board(object):
         """
         self.size = size
         self.board = []
-        for i in range(self.size):  # create an empty board of size x size
+        # create an empty board of size x size
+        for i in range(self.size):  # y axis
             self.board.append([])
-            for j in range(self.size):
+            for j in range(self.size):  # x axis
                 self.board[i].append(" ")
         self.ships = []
 
@@ -95,7 +97,7 @@ class Board(object):
             Returns:
                 None
         """
-        for coords in ship.get_positions(): # for each coordinate in the ship
+        for coords in ship.get_positions():  # for each coordinate in the ship
             # occupy the coordinate with the ship
             self.board[coords[0]][coords[1]] = "S"
         self.ships.append(ship)
@@ -109,13 +111,13 @@ class Board(object):
                 None
         """
         if self.board[guess[0]][guess[1]] == "S":   # if the guess is a hit
-            self.board[guess[0]][guess[1]] = "H"
-            for ship in self.ships:
+            self.board[guess[0]][guess[1]] = "H"  # update the board
+            for ship in self.ships:  # finds the ship that was hit
                 if guess in ship.get_positions():
-                    ship.apply_hit()
+                    ship.apply_hit()  # applies a hit to the ship object
             print("Hit!")
         else:   # if the guess is a miss
-            self.board[guess[0]][guess[1]] = "M"
+            self.board[guess[0]][guess[1]] = "M"  # update the board
             print("Miss!")
 
     def validate_ship_coordinates(self, ship):
